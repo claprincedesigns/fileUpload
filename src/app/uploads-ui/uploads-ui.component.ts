@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
 
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators/map';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-uploads-ui',
@@ -14,16 +14,23 @@ export class UploadsUiComponent implements OnInit {
   downloadURL: Observable<string>;
   uploadState: Observable<string>;
 
-  constructor(private afStorage: AngularFireStorage) { }
+  constructor(private storage: AngularFireStorage) { }
 
-  // upload(event) {
-  //   const randomId = Math.random().toString(36).substring(2);
-  //   this.ref = this.afStorage.ref(randomId);
-  //   this.task = this.ref.put(event.target.files[0]);
-  //   this.uploadState = this.task.snapshotChanges().pipe(map(s => s.state));
-  //   this.uploadProgress = this.task.percentageChanges();
-  //   this.downloadURL = this.task.downloadURL();
-  // }
+  upload(event) {
+    const file = event.target.files[0];
+    const filePath = '//fir-upload-8f061.appspot.com';
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+
+    // observe percentage changes
+    this.uploadProgress = task.percentageChanges();
+
+    // get notified when the download URL is available
+    task.snapshotChanges().pipe(
+      finalize(() => this.downloadURL = fileRef.getDownloadURL() )
+   )
+  .subscribe();
+  }
 
   ngOnInit() {
   }

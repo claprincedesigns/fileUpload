@@ -1,6 +1,6 @@
 <h1>File Upload</h1>
 
-<input *ngIf="documentType" type="file" (change)="upload($event)">
+
 
 <select [(ngModel)]="documentType">
   <option value="po">Purchase Order</option>
@@ -9,20 +9,21 @@
   <option value="sn">Shipment Notice</option>
 </select>
 
+<input *ngIf="documentType" type="file" (change)="upload($event)">
 <progress max="100" [value]="(uploadProgress | async)"></progress>
-<div class="result" *ngIf="uploadURL | async; let uploadSrc">
-  <a [href]="uploadSrc">You just uploaded this file!</a>
-</div>
 
 <section class="control-bar" *ngIf="uploadState | async; let state">
   <button (click)="task.pause()" [disabled]="state === 'paused'">Pause</button>
   <button (click)="task.resume()" [disabled]="!(state === 'paused' || state === 'running')">Resume</button>
   <button (click)="task.cancel()" [disabled]="state === 'running'">Cancel</button>
 </section>
-
-<div class="container" *ngIf="downloadURL | async; let downloadSrc">
-  <img [src]="url" alt="Image from AngularFireStorage">
-  File uploaded: <a [href]="downloadSrc">{{ downloadSrc }}</a>
+<br>
+<br>
+<div>
+  File uploaded: 
+  <a [href]="downloadSrc">{{ downloadURL | async }}</a>
 </div>
+
+
 
 
