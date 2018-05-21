@@ -1,7 +1,5 @@
 <h1>File Upload</h1>
 
-
-
 <select [(ngModel)]="documentType">
   <option value="po">Purchase Order</option>
   <option value="dr">Delivery Receipt</option>
@@ -21,7 +19,7 @@
 <br>
 <div>
   File uploaded: 
-  <a [href]="downloadSrc">{{ downloadURL | async }}</a>
+  <a [href]="downloadSrc" target="blank">{{ downloadURL | async }}</a>
 </div>
 
 

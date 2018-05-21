@@ -21,6 +21,7 @@ export class UploadsUiComponent implements OnInit {
     const filePath = '//fir-upload-8f061.appspot.com';
     const fileRef = this.storage.ref(filePath);
     const task = this.storage.upload(filePath, file);
+    // const fileTask = fileRef.put(filePath, file);
 
     // observe percentage changes
     this.uploadProgress = task.percentageChanges();
